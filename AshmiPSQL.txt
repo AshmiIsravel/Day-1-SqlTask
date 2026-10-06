@@ -1,0 +1,694 @@
+============================================================
+             LIBRARY MANAGEMENT SYSTEM
+             POSTGRESQL SQL TASK
+============================================================
+
+
+============================================================
+A1 - DDL - DATA DEFINITION LANGUAGE
+============================================================
+
+-- 1. Create database
+CREATE DATABASE librarydb;
+
+-- Connect to librarydb
+-- \c librarydb
+
+
+-- 3. Create Books table
+CREATE TABLE Books (
+    book_id INT PRIMARY KEY,
+    book_name VARCHAR(150),
+    author VARCHAR(100),
+    price DECIMAL(10,2)
+);
+
+
+-- 4. Create Members table
+CREATE TABLE Members (
+    member_id INT PRIMARY KEY,
+    member_name VARCHAR(100),
+    city VARCHAR(100),
+    phone VARCHAR(20)
+);
+
+
+-- 5. Create Borrow table
+CREATE TABLE Borrow (
+    borrow_id INT PRIMARY KEY,
+    book_id INT,
+    member_id INT,
+    borrow_date DATE
+);
+
+
+-- 6. Add category
+ALTER TABLE Books
+ADD COLUMN category VARCHAR(50);
+
+
+-- 7. Add quantity
+ALTER TABLE Books
+ADD COLUMN quantity INT;
+
+
+-- 8. Add email
+ALTER TABLE Members
+ADD COLUMN email VARCHAR(150);
+
+
+-- 9. Add return_date
+ALTER TABLE Borrow
+ADD COLUMN return_date DATE;
+
+
+-- 10. Modify price to decimal
+ALTER TABLE Books
+ALTER COLUMN price TYPE DECIMAL(10,2);
+
+
+-- 11. Rename quantity
+ALTER TABLE Books
+RENAME COLUMN quantity TO stock_quantity;
+
+
+-- 12. Display Books structure
+-- \d Books
+
+
+-- 13. Display Members structure
+-- \d Members
+
+
+-- 14. Display Borrow structure
+-- \d Borrow
+
+
+
+============================================================
+A2 - DML - DATA MANIPULATION LANGUAGE
+============================================================
+
+
+-------------------------
+INSERT
+-------------------------
+
+-- 15. Insert 10 books
+
+INSERT INTO Books
+(book_id, book_name, author, price, category, stock_quantity)
+VALUES
+(101, 'SQL Fundamentals', 'Ramesh Kumar', 450.00, 'Technology', 15),
+(102, 'Java Programming', 'James Gosling', 750.00, 'Technology', 12),
+(103, 'Python Basics', 'Guido van Rossum', 650.00, 'Technology', 10),
+(104, 'Clean Code', 'Robert Martin', 850.00, 'Technology', 8),
+(105, 'Database Systems', 'Raghu Ramakrishnan', 900.00, 'Education', 7),
+(106, 'The Great Gatsby', 'F. Scott Fitzgerald', 350.00, 'Fiction', 5),
+(107, 'Science Today', 'John Smith', 500.00, 'Science', 20),
+(108, 'SQL Advanced', 'Ramesh Kumar', 700.00, 'Technology', 14),
+(109, 'English Grammar', 'David Allen', 300.00, 'Education', 18),
+(110, 'Software Engineering', 'Ian Sommerville', 800.00, 'Education', 9);
+
+
+-- 16. Insert 8 members
+
+INSERT INTO Members
+(member_id, member_name, city, phone, email)
+VALUES
+(201, 'Arun Kumar', 'Chennai', '9876543210', 'arun@gmail.com'),
+(202, 'Priya Sharma', 'Bangalore', '9876543211', 'priya@gmail.com'),
+(203, 'Rahul Raj', 'Coimbatore', '9876543212', 'rahul@gmail.com'),
+(204, 'Divya S', 'Salem', '9876543213', 'divya@gmail.com'),
+(205, 'Karthik M', 'Madurai', '9876543214', 'karthik@gmail.com'),
+(206, 'Meena Devi', 'Chennai', '9876543215', 'meena@gmail.com'),
+(207, 'Vijay Kumar', 'Trichy', '9876543216', 'vijay@gmail.com'),
+(208, 'Anitha R', 'Erode', '9876543217', 'anitha@gmail.com');
+
+
+-- 17. Insert 10 borrow records
+
+INSERT INTO Borrow
+(borrow_id, book_id, member_id, borrow_date, return_date)
+VALUES
+(301, 101, 201, '2026-09-01', '2026-09-15'),
+(302, 102, 202, '2026-09-02', '2026-09-16'),
+(303, 103, 203, '2026-09-03', '2026-09-17'),
+(304, 101, 204, '2026-09-04', '2026-09-18'),
+(305, 104, 205, '2026-09-05', '2026-09-19'),
+(306, 105, 206, '2026-09-06', '2026-09-20'),
+(307, 108, 207, '2026-09-07', '2026-09-21'),
+(308, 102, 208, '2026-09-08', '2026-09-22'),
+(309, 103, 201, '2026-09-09', '2026-09-23'),
+(310, 108, 203, '2026-09-10', '2026-09-24');
+
+
+-- 18. Insert one additional book
+
+INSERT INTO Books
+(book_id, book_name, author, price, category, stock_quantity)
+VALUES
+(111, 'System Design', 'Martin Fowler', 950.00, 'Technology', 6);
+
+
+-- 19. Insert one additional member
+
+INSERT INTO Members
+(member_id, member_name, city, phone, email)
+VALUES
+(209, 'Suresh B', 'Salem', '9876543218', 'suresh@gmail.com');
+
+
+-- 20. Insert new borrow record
+
+INSERT INTO Borrow
+(borrow_id, book_id, member_id, borrow_date, return_date)
+VALUES
+(311, 111, 209, '2026-09-11', '2026-09-25');
+
+
+
+-------------------------
+UPDATE
+-------------------------
+
+-- 21. Update price of book 103
+
+UPDATE Books
+SET price = 700.00
+WHERE book_id = 103;
+
+
+-- 22. Increase Technology book prices by 10%
+
+UPDATE Books
+SET price = price * 1.10
+WHERE category = 'Technology';
+
+
+-- 23. Increase stock quantity by 5
+
+UPDATE Books
+SET stock_quantity = stock_quantity + 5;
+
+
+-- 24. Update city
+
+UPDATE Members
+SET city = 'Chennai'
+WHERE member_id = 203;
+
+
+-- 25. Update email
+
+UPDATE Members
+SET email = 'rahulraj@gmail.com'
+WHERE member_id = 203;
+
+
+-- 26. Change category
+
+UPDATE Books
+SET category = 'Education'
+WHERE book_id = 107;
+
+
+-- 27. Update return date
+
+UPDATE Borrow
+SET return_date = '2026-10-01'
+WHERE borrow_id = 301;
+
+
+
+-------------------------
+DELETE
+-------------------------
+
+-- 28. Delete book 106
+
+DELETE FROM Books
+WHERE book_id = 106;
+
+
+-- 29. Delete member who has no borrow records
+
+DELETE FROM Members m
+WHERE m.member_id = 208
+AND NOT EXISTS (
+    SELECT 1
+    FROM Borrow b
+    WHERE b.member_id = m.member_id
+);
+
+
+-- 30. Delete specific borrow record
+
+DELETE FROM Borrow
+WHERE borrow_id = 310;
+
+
+-- 31. Delete books whose stock quantity is 0
+
+DELETE FROM Books
+WHERE stock_quantity = 0;
+
+
+
+============================================================
+A3 - DQL - DATA QUERY LANGUAGE
+============================================================
+
+-- 32. Display all records
+
+SELECT *
+FROM Books;
+
+
+-- 33. Display book_name and author
+
+SELECT book_name, author
+FROM Books;
+
+
+-- 34. Display book_name, category and price
+
+SELECT book_name, category, price
+FROM Books;
+
+
+-- 35. Price greater than 500
+
+SELECT *
+FROM Books
+WHERE price > 500;
+
+
+-- 36. Price less than 500
+
+SELECT *
+FROM Books
+WHERE price < 500;
+
+
+-- 37. Price between 300 and 800
+
+SELECT *
+FROM Books
+WHERE price BETWEEN 300 AND 800;
+
+
+-- 38. Technology books
+
+SELECT *
+FROM Books
+WHERE category = 'Technology';
+
+
+-- 39. Books written by Ramesh Kumar
+
+SELECT *
+FROM Books
+WHERE author = 'Ramesh Kumar';
+
+
+-- 40. Book names starting with S
+
+SELECT *
+FROM Books
+WHERE book_name LIKE 'S%';
+
+
+-- 41. Book names containing SQL
+
+SELECT *
+FROM Books
+WHERE book_name LIKE '%SQL%';
+
+
+-- 42. Technology or Education books
+
+SELECT *
+FROM Books
+WHERE category IN ('Technology', 'Education');
+
+
+-- 43. Price not equal to 500
+
+SELECT *
+FROM Books
+WHERE price <> 500;
+
+
+-- 44. Stock quantity greater than 10
+
+SELECT *
+FROM Books
+WHERE stock_quantity > 10;
+
+
+-- 45. Stock quantity between 5 and 15
+
+SELECT *
+FROM Books
+WHERE stock_quantity BETWEEN 5 AND 15;
+
+
+
+============================================================
+A4 - DCL - DATA CONTROL LANGUAGE
+============================================================
+
+-- 1. Create user
+
+CREATE USER library_user
+WITH PASSWORD 'Library@123';
+
+
+-- 2. Grant SELECT privilege
+
+GRANT SELECT
+ON TABLE Books
+TO library_user;
+
+
+-- 3. Grant INSERT privilege
+
+GRANT INSERT
+ON TABLE Books
+TO library_user;
+
+
+-- 4. Grant UPDATE privilege
+
+GRANT UPDATE
+ON TABLE Books
+TO library_user;
+
+
+-- 5. Display privileges
+
+SELECT grantee, privilege_type
+FROM information_schema.role_table_grants
+WHERE grantee = 'library_user'
+AND table_name = 'books';
+
+
+-- 6. Revoke INSERT privilege
+
+REVOKE INSERT
+ON TABLE Books
+FROM library_user;
+
+
+-- 7. Revoke UPDATE privilege
+
+REVOKE UPDATE
+ON TABLE Books
+FROM library_user;
+
+
+-- 8. Grant SELECT on all tables
+
+GRANT SELECT
+ON ALL TABLES IN SCHEMA public
+TO library_user;
+
+
+-- 9. Revoke SELECT on Books
+
+REVOKE SELECT
+ON TABLE Books
+FROM library_user;
+
+
+-- 10. Display final privileges
+
+SELECT grantee, table_name, privilege_type
+FROM information_schema.role_table_grants
+WHERE grantee = 'library_user';
+
+
+
+============================================================
+A5 - SORTING AND LIMIT
+============================================================
+
+-- 46. Sort by price ascending
+
+SELECT *
+FROM Books
+ORDER BY price ASC;
+
+
+-- 47. Sort by price descending
+
+SELECT *
+FROM Books
+ORDER BY price DESC;
+
+
+-- 48. Sort alphabetically by book name
+
+SELECT *
+FROM Books
+ORDER BY book_name ASC;
+
+
+-- 49. Sort by category and then price
+
+SELECT *
+FROM Books
+ORDER BY category ASC, price ASC;
+
+
+-- 50. Display 3 most expensive books
+
+SELECT *
+FROM Books
+ORDER BY price DESC
+LIMIT 3;
+
+
+-- 51. Display 3 cheapest books
+
+SELECT *
+FROM Books
+ORDER BY price ASC
+LIMIT 3;
+
+
+-- 52. Display 5 books with highest stock
+
+SELECT *
+FROM Books
+ORDER BY stock_quantity DESC
+LIMIT 5;
+
+
+-- 53. First 5 members alphabetically
+
+SELECT *
+FROM Members
+ORDER BY member_name ASC
+LIMIT 5;
+
+
+-- 54. Latest 5 borrow records
+
+SELECT *
+FROM Borrow
+ORDER BY borrow_date DESC
+LIMIT 5;
+
+
+
+============================================================
+A6 - AGGREGATE FUNCTIONS
+============================================================
+
+-- 55. Count total books
+
+SELECT COUNT(*) AS total_books
+FROM Books;
+
+
+-- 56. Count total members
+
+SELECT COUNT(*) AS total_members
+FROM Members;
+
+
+-- 57. Count total borrow records
+
+SELECT COUNT(*) AS total_borrow_records
+FROM Borrow;
+
+
+-- 58. Total stock quantity
+
+SELECT SUM(stock_quantity) AS total_stock
+FROM Books;
+
+
+-- 59. Total price
+
+SELECT SUM(price) AS total_price
+FROM Books;
+
+
+-- 60. Average price
+
+SELECT AVG(price) AS average_price
+FROM Books;
+
+
+-- 61. Highest book price
+
+SELECT MAX(price) AS highest_price
+FROM Books;
+
+
+-- 62. Lowest book price
+
+SELECT MIN(price) AS lowest_price
+FROM Books;
+
+
+-- 63. Difference between highest and lowest price
+
+SELECT MAX(price) - MIN(price) AS price_difference
+FROM Books;
+
+
+-- 64. Average stock quantity
+
+SELECT AVG(stock_quantity) AS average_stock
+FROM Books;
+
+
+
+============================================================
+A7 - GROUP BY
+============================================================
+
+-- 65. Count books in each category
+
+SELECT category, COUNT(*) AS book_count
+FROM Books
+GROUP BY category;
+
+
+-- 66. Average price in each category
+
+SELECT category, AVG(price) AS average_price
+FROM Books
+GROUP BY category;
+
+
+-- 67. Highest price in each category
+
+SELECT category, MAX(price) AS highest_price
+FROM Books
+GROUP BY category;
+
+
+-- 68. Lowest price in each category
+
+SELECT category, MIN(price) AS lowest_price
+FROM Books
+GROUP BY category;
+
+
+-- 69. Total stock quantity for each category
+
+SELECT category, SUM(stock_quantity) AS total_stock
+FROM Books
+GROUP BY category;
+
+
+-- 70. Total value of books in each category
+
+SELECT category, SUM(price * stock_quantity) AS total_value
+FROM Books
+GROUP BY category;
+
+
+-- 71. Categories having more than 2 books
+
+SELECT category, COUNT(*) AS book_count
+FROM Books
+GROUP BY category
+HAVING COUNT(*) > 2;
+
+
+-- 72. Categories whose average price is greater than 500
+
+SELECT category, AVG(price) AS average_price
+FROM Books
+GROUP BY category
+HAVING AVG(price) > 500;
+
+
+-- 73. Count books written by each author
+
+SELECT author, COUNT(*) AS book_count
+FROM Books
+GROUP BY author;
+
+
+-- 74. Average price of books by each author
+
+SELECT author, AVG(price) AS average_price
+FROM Books
+GROUP BY author;
+
+
+
+============================================================
+A8 - HAVING
+============================================================
+
+-- 75. Categories containing more than 2 books
+
+SELECT category, COUNT(*) AS book_count
+FROM Books
+GROUP BY category
+HAVING COUNT(*) > 2;
+
+
+-- 76. Categories having average price greater than 500
+
+SELECT category, AVG(price) AS average_price
+FROM Books
+GROUP BY category
+HAVING AVG(price) > 500;
+
+
+-- 77. Authors who have more than one book
+
+SELECT author, COUNT(*) AS book_count
+FROM Books
+GROUP BY author
+HAVING COUNT(*) > 1;
+
+
+-- 78. Categories having total stock greater than 20
+
+SELECT category, SUM(stock_quantity) AS total_stock
+FROM Books
+GROUP BY category
+HAVING SUM(stock_quantity) > 20;
+
+
+-- 79. Authors whose average book price is greater than 600
+
+SELECT author, AVG(price) AS average_price
+FROM Books
+GROUP BY author
+HAVING AVG(price) > 600;
+
+
+============================================================
+                    END
+============================================================
